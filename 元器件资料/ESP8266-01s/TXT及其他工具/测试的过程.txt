@@ -1,0 +1,66 @@
+AT
+
+OK
+AT+RST
+
+OK
+WIFI DISCONNECT
+;ld溸|?$鄚?d?c|莾?搟抍$b岓og焞'o茔?#pldcls$p?'??lco?<屒|?c岥g'?l膰d`?no$`'{彃沷沴 p騨?{屲溾?co?<?嘽尿'o?d`?'o$`gs彃搊溘`p?'?s能溿??co?<靌$審c匊gn?l`?no?$g{彃沷倹踐r涆g冔揱
+################################################
+arch:ESP8266, 1
+compile_time:Ai-Thinker|B&T
+wifi_mac:a020A60d19E1
+sdk_version:v3.4-22-g967752e2
+firmware_version:2.2.0
+compile_time:Jun 30 2021 11:28:20
+
+ready
+
+################################################WIFI CONNECTED
+WIFI GOT IP
+AT+CWMODE=1
+
+OK
+AT+CWDHCP=1,1
+
+OK
+AT+CWJAP="CMCC-CC","67824366"
+WIFI DISCONNECT
+WIFI CONNECTED
+WIFI GOT IP
+
+OK
+AT+MQTTUSERCFG=0,1,"mqtt1","V0uTuio971","version=2018-10-31&res=products%2FV0uTuio971%2Fdevices%2Fmqtt1&et=2810295937&method=md5&sign=28AeB5C1zIV22nZ8HCeAUQ%3D%3D",0,0,""
+
+OK
+AT+MQTTCONN=0,"mqtts.heclouds.com",1883,1
++MQTTCONNECTED:0,1,"mqtts.heclouds.com","1883","",1
+
+OK
+AT+MQTTSUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post/reply",1
+
+OK
+AT+MQTTPUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post","{\"id\":\"123\"\,\"params\":{\"temp\":{\"value\":23.6\}}}",0,0
+
+OK
++MQTTSUBRECV:0,"$sys/V0uTuio971/mqtt1/thing/property/post/reply",39,{"id":"123","code":200,"msg":"success"}
+AT+MQTTPUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post","{\"id\":\"123\"\,\"params\":{\"temp\":{\"value\":23.6\}}}",0,0
+
+OK
++MQTTSUBRECV:0,"$sys/V0uTuio971/mqtt1/thing/property/post/reply",39,{"id":"123","code":200,"msg":"success"}
+AT+MQTTPUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post","{\"id\":\"123\"\,\"params\":{\"temp\":{\"value\":23.6\}}}",0,0
+
+OK
++MQTTSUBRECV:0,"$sys/V0uTuio971/mqtt1/thing/property/post/reply",39,{"id":"123","code":200,"msg":"success"}
+AT+MQTTPUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post","{\"id\":\"123\"\,\"params\":{\"temp\":{\"value\":23.6\}}}",0,0
+
+OK
++MQTTSUBRECV:0,"$sys/V0uTuio971/mqtt1/thing/property/post/reply",39,{"id":"123","code":200,"msg":"success"}
+AT+MQTTPUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post","{\"id\":\"123\"\,\"params\":{\"temp\":{\"value\":25.6\}}}",0,0
+
+OK
++MQTTSUBRECV:0,"$sys/V0uTuio971/mqtt1/thing/property/post/reply",39,{"id":"123","code":200,"msg":"success"}
+AT+MQTTPUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post","{\"id\":\"123\"\,\"params\":{\"temp\":{\"value\":26.6\}}}",0,0
+
+OK
++MQTTSUBRECV:0,"$sys/V0uTuio971/mqtt1/thing/property/post/reply",39,{"id":"123","code":200,"msg":"success"}

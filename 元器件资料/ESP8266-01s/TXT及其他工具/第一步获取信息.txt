@@ -1,0 +1,37 @@
+产品ID：V0uTuio971
+设备名称：mqtt1
+
+AT+CWMODE=1
+
+AT+CWJAP="CMCC-CC","67824366"
+
+
+AT+MQTTUSERCFG=0,1,"mqtt1","V0uTuio971","version=2018-10-31&res=products%2FV0uTuio971%2Fdevices%2Fmqtt1&et=2810295937&method=md5&sign=28AeB5C1zIV22nZ8HCeAUQ%3D%3D",0,0,""
+
+AT+MQTTCONN=0,"mqtts.heclouds.com",1883,1
+
+
+1、AT  //测试指令
+2、AT+RST  //复位指令
+3、AT+CWMODE=1  //设置为station模式
+4、AT+CWDHCP=1,1  //启动DHCP
+5、AT+CWJAP="CMCC-CC","67824366"
+6、AT+MQTTUSERCFG=0,1,"mqtt1","V0uTuio971","version=2018-10-31&res=products%2FV0uTuio971%2Fdevices%2Fmqtt1&et=2810295937&method=md5&sign=28AeB5C1zIV22nZ8HCeAUQ%3D%3D",0,0,""
+7、AT+MQTTCONN=0,"mqtts.heclouds.com",1883,1
+8、AT+MQTTSUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post/reply",1
+9、AT+MQTTPUB=0,"$sys/V0uTuio971/mqtt1/thing/property/post","{\"id\":\"123\"\,\"params\":{\"temp\":{\"value\":23.6\}}}",0,0
+
+
+
+格式：
+{
+    "id": "123",
+    "version": "1.0",
+    "params": {
+        "temp": {
+            "value": 23.6,
+            "time": 1599534283111
+        }   
+    }
+}
+

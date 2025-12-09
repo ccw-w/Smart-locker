@@ -1,0 +1,30 @@
+Log file created at: 2021/06/28 13:45:09  PID: 15984
+Running on machine: PC-20201117JZJM
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0628 13:45:09.159909  4568 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], version: V1.0.1 
+ 
+I0628 13:45:55.836578  4568 UniOneDebugToolDlg.cpp:957] in function[CUniOneDebugToolDlg::StartBurn], opening Serial Port 1 
+I0628 13:45:55.843578  4568 UniOneDebugToolDlg.cpp:957] in function[CUniOneDebugToolDlg::StartBurn], opening Serial Port 11 
+I0628 13:45:56.856637  4568 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], COM put_setting 921600, N, 8, 1 port:11 
+ 
+Log file created at: 2021/06/28 13:49:00  PID: 5160
+Running on machine: PC-20201117JZJM
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0628 13:49:00.560144  5904 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], version: V1.0.1 
+ 
+I0628 13:49:09.241641  5904 UniOneDebugToolDlg.cpp:957] in function[CUniOneDebugToolDlg::StartBurn], opening Serial Port 1 
+I0628 13:49:09.248641  5904 UniOneDebugToolDlg.cpp:957] in function[CUniOneDebugToolDlg::StartBurn], opening Serial Port 11 
+I0628 13:49:10.262699  5904 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], COM put_setting 921600, N, 8, 1 port:11 
+ 
+I0628 13:49:22.362391  5256 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], COM11 XmodermSendFile detected CCC, start send file 
+ 
+I0628 13:49:22.364392  5256 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], COM11 ReadSendFile C:\Users\Administrator\Desktop\uni_app_release_update.bin m_iTransferTimes finished 1214 
+ 
+I0628 13:53:05.037127  5904 UniOneDebugToolDlg.cpp:957] in function[CUniOneDebugToolDlg::StartBurn], opening Serial Port 1 
+I0628 13:53:05.052129  5904 UniOneDebugToolDlg.cpp:957] in function[CUniOneDebugToolDlg::StartBurn], opening Serial Port 10 
+I0628 13:53:05.066129  5904 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], COM put_setting 921600, N, 8, 1 port:10 
+ 
+I0628 13:53:11.982524  5256 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], COM10 XmodermSendFile detected CCC, start send file 
+ 
+I0628 13:53:11.984524  5256 code_page.cpp:268] in function[Unisound::OutputDebugPrintf], COM10 ReadSendFile C:\Users\Administrator\Desktop\1\uni_hb_m_solution\image_demo\Hummingbird-M-Update-Tool\uni_app_release_update.bin m_iTransferTimes finished 1240 
+ 

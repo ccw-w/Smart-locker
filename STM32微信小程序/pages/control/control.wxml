@@ -1,0 +1,45 @@
+<view class="page-container">
+  <!-- 控制部分 -->
+  <view class="control-container">
+    <!-- 一号柜 -->
+    <view class="data-card">
+      <image class="data-card__icon" src="/images/cabinet.png" />
+      <view class="data-card__text">
+        <view class="data-card-title">一号柜</view>
+        <view class="data-card-value">
+          <switch checked="{{ one }}" bindchange="onDeviceChange" data-device="one" color="#4caf50" />
+        </view>
+      </view>
+    </view>
+    <!-- 二号柜 -->
+    <view class="data-card">
+      <image class="data-card__icon" src="/images/cabinet.png" />
+      <view class="data-card__text">
+        <view class="data-card-title">二号柜</view>
+        <view class="data-card-value">
+          <switch checked="{{ two }}" bindchange="onDeviceChange" data-device="two" color="#4caf50" />
+        </view>
+      </view>
+    </view>
+    <!-- 三号柜 -->
+    <view class="data-card">
+      <image class="data-card__icon" src="/images/cabinet.png" />
+      <view class="data-card__text">
+        <view class="data-card-title">三号柜</view>
+        <view class="data-card-value">
+          <switch checked="{{ three }}" bindchange="onDeviceChange" data-device="three" color="#4caf50" />
+        </view>
+      </view>
+    </view>
+    <!-- 排气扇 -->
+    <view class="data-card">
+      <image class="data-card__icon" src="/images/fan.png" />
+      <view class="data-card__text">
+        <view class="data-card-title">排气扇</view>
+        <view class="data-card-value">
+          <switch checked="{{ fan }}" bindchange="onDeviceChange" data-device="fan" color="#4caf50" />
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

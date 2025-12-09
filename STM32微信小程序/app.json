@@ -1,0 +1,31 @@
+{
+    "pages": [
+      "pages/index/index",
+      "pages/control/control"
+    ],
+    "window": {
+      "navigationBarBackgroundColor": "#ffffff",
+      "navigationBarTextStyle": "black",
+      "navigationBarTitleText": "智能仓储柜"
+    },
+    "tabBar": {
+      "list": [
+        {
+          "pagePath": "pages/index/index",
+          "text": "监测",
+          "iconPath": "images/home.png",
+          "selectedIconPath": "images/home-active.png"
+        },
+        {
+          "pagePath": "pages/control/control",
+          "text": "控制",
+          "iconPath": "images/settings.png",
+          "selectedIconPath": "images/settings-active.png"
+        }
+      ],
+      "color": "#7A7E83",
+      "selectedColor": "#000000",
+      "borderStyle": "black",
+      "backgroundColor": "#ffffff"
+    }
+  }

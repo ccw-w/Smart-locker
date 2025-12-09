@@ -1,0 +1,63 @@
+ <!-- 顶部信息框 -->
+ <view class="top-info-container">
+    <view class="top-info-item">
+        <view class="container">
+        <view class="current-time">
+        {{currentTime}}
+    </view>
+    </view>
+    </view>
+    <view class="top-info-item">
+      <view class="top-info-label">天气状态</view>
+      <view class="top-info-value">{{ weatherStatus }}</view>
+    </view>
+    <view class="top-info-item">
+      <view class="top-info-label">当前位置</view>
+      <view class="top-info-value">{{ currentLocation }}</view>
+    </view>
+  </view>
+<view class="page-container">
+  <!-- 数据部分 -->
+  <view class="data-container">
+    <!-- 温度 -->
+    <view class="data-card">
+      <image class="data-card__icon" src="/images/temp.png" />
+      <view class="data-card__text">
+        <view class="data-card-title">温度</view>
+        <view class="data-card-value">{{ temp }}°C</view>
+        <view class="slider-label">设置温度阈值</view>
+        <slider min="0" max="50" value="{{tempThreshold}}" bindchange="onTempThresholdChange" />
+    <view class="slider-value">当前值: {{tempThreshold}}°C</view>
+      </view>
+    </view>
+    <!-- 湿度 -->
+    <view class="data-card">
+      <image class="data-card__icon" src="/images/humi.png" />
+      <view class="data-card__text">
+        <view class="data-card-title">湿度</view>
+        <view class="data-card-value">{{ humi }}%</view>
+        <view class="slider-label">设置湿度阈值</view>
+    <slider min="0" max="100" value="{{humiThreshold}}" bindchange="onHumiThresholdChange" />
+    <view class="slider-value">当前值: {{humiThreshold}}%</view>
+      </view>
+    </view>
+    <!-- 火焰检测状态 -->
+    <view class="data-card-2">
+      <image class="data-card__icon" src="/images/flame.png" />
+      <view class="data-card__text">
+        <view class="data-card-title">火焰检测</view>
+        <view class="data-card-value">{{ flameDetected ? '有火焰' : '无火焰' }}</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+    <!-- 火焰检测时间 -->
+    <view class="flame-time-container">
+        <view class="flame-time-label">距离上次检测到火焰时间：{{ lastFlameTime }}</view>
+    </view>
+
+    <!-- 图表 -->
+    <view class="chart-container">
+        <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+    </view>

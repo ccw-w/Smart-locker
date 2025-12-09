@@ -1,0 +1,107 @@
+.page-container {
+    padding: 20rpx;
+  }
+  
+  .data-container {
+    margin-top: 36rpx;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 300rpx);
+    grid-gap: 36rpx;
+  }
+  
+  .data-card, .data-card-2 {
+    position: relative;
+    background-color: #fff;
+    height: 160rpx;
+    box-shadow: #d6d6d6 0 0 8rpx;
+    border-radius: 36rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24rpx;
+  }
+  
+  .data-card-2 {
+    width: 585rpx;
+    margin-top: 100rpx;
+  }
+  
+  .data-card-title {
+    font-size: 38rpx;
+    color: #7f7f7f;
+  }
+  
+  .data-card__text {
+    position: absolute;
+    right: 32rpx;
+    top: 16rpx;
+    text-align: right;
+    white-space: nowrap;
+  }
+  
+  .data-card__icon {
+    position: absolute;
+    height: 72rpx;
+    width: 72rpx;
+    left: 24rpx;
+    top: 32rpx;
+  }
+  
+  .data-card-value {
+    font-size: 52rpx;
+    font-weight: bold;
+    color: #7f7f7f;
+    display: flex;
+    align-items: center;
+  }
+  
+  .additional-info {
+    margin-top: 36rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .chart-container {
+    width: 700rpx;
+    height: 500rpx;
+    margin-top: 20rpx;
+    margin-left: 50rpx;
+    position: relative;
+  }
+  
+  .temperature-chart {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .flame-time-container {
+      margin-left: 60rpx;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .flame-time-label {
+    font-size: 35rpx;
+    font-weight: bold;
+    color: #7f7f7f;
+    margin-bottom: 10rpx;
+  }
+  .top-info-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 20rpx;
+    background-color: #f0f0f0;
+    padding: 20rpx;
+    border-radius: 10rpx;
+    box-shadow: #d6d6d6 0 0 8rpx;
+  }
+  
+  .current-time {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+  }

@@ -1,0 +1,56 @@
+.page-container {
+    padding: 20rpx;
+  }
+  
+  .control-container {
+    margin-top: 36rpx;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 300rpx);
+    grid-gap: 36rpx;
+  }
+  
+  .data-card {
+    position: relative;
+    background-color: #fff;
+    height: 160rpx;
+    box-shadow: #d6d6d6 0 0 8rpx;
+    border-radius: 36rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24rpx;
+  }
+  
+  .data-card-title {
+    font-size: 38rpx;
+    color: #7f7f7f;
+  }
+  
+  .data-card__text {
+    position: absolute;
+    right: 32rpx;
+    top: 16rpx;
+    text-align: right;
+    white-space: nowrap;
+  }
+  
+  .data-card__icon {
+    position: absolute;
+    height: 72rpx;
+    width: 72rpx;
+    left: 24rpx;
+    top: 32rpx;
+  }
+  
+  .data-card-value {
+    font-size: 52rpx;
+    font-weight: bold;
+    color: #7f7f7f;
+    display: flex;
+    align-items: center;
+  }
+  
+  switch {
+    transform: scale(1.2); /* 可选：放大滑动开关的大小 */
+  }
