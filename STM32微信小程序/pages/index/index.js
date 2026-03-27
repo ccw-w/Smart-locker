@@ -96,9 +96,9 @@ Page({
   get_info() {
   console.log('获取设备信息');
   wx.request({
-    url: "https://iot-api.heclouds.com/thingmodel/query-device-property?product_id=oay0gSchgn&device_name=cabinet",
+    url: "{**}",
     header: {
-      "authorization": "version=2018-10-31&res=products%2Foay0gSchgn%2Fdevices%2Fcabinet&et=1916285142&method=md5&sign=iE9rAZ8KU8zpHjSLQDvPUg%3D%3D"
+      "{**}": "{**}"
     },
     method: "GET",
     success: res => {
@@ -281,7 +281,7 @@ formatTemperature(value) {
 
   getWeatherInfo(retries = 3, delay = 10000) {
     wx.request({
-      url: "https://cn.apihz.cn/api/tianqi/tqyb.php?id=88888888&key=88888888&sheng=江苏&place=苏州",
+      url: "{**}",
       method: "GET",
       success: res => {
         console.log('天气信息获取成功', res);
@@ -312,14 +312,14 @@ formatTemperature(value) {
     console.log(`发送命令给设备 ${device}，值为 ${value}`);
 
     wx.request({
-      url: 'https://iot-api.heclouds.com/thingmodel/set-device-desired-property',
+      url: '{**}',
       method: 'POST',
       header: {
-        "authorization": "version=2018-10-31&res=products%2Foay0gSchgn%2Fdevices%2Fcabinet&et=1916285142&method=md5&sign=iE9rAZ8KU8zpHjSLQDvPUg%3D%3D"
+        "{**}": "{**}"
       },
       data: JSON.stringify({
-        "product_id": "oay0gSchgn",
-        "device_name": "cabinet",
+        "product_id": "{**}",
+        "device_name": "{**}",
         "params": { [device]: value }
       }),
       success: res => {
