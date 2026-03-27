@@ -22,9 +22,9 @@ Page({
     get_info() {
       console.log('获取设备信息');
       wx.request({
-        url: "https://iot-api.heclouds.com/thingmodel/query-device-property?product_id=oay0gSchgn&device_name=cabinet",
+        url: "{**}",
         header: {
-          "authorization": "version=2018-10-31&res=products%2Foay0gSchgn%2Fdevices%2Fcabinet&et=1916285142&method=md5&sign=iE9rAZ8KU8zpHjSLQDvPUg%3D%3D"
+          "{**}": "{**}"
         },
         method: "GET",
         success: res => {
@@ -63,14 +63,14 @@ Page({
       this.setData({ isSendingCommand: true });
   
       wx.request({
-        url: 'https://iot-api.heclouds.com/thingmodel/set-device-desired-property',
+        url: '{**}',
         method: 'POST',
         header: {
-          "authorization": "version=2018-10-31&res=products%2Foay0gSchgn%2Fdevices%2Fcabinet&et=1916285142&method=md5&sign=iE9rAZ8KU8zpHjSLQDvPUg%3D%3D"
+          "{**}": "{**}"
         },
         data: JSON.stringify({
-          "product_id": "oay0gSchgn",
-          "device_name": "cabinet",
+          "product_id": "{**}",
+          "device_name": "{**}",
           "params": { [device]: value }
         }),
         success: res => {
