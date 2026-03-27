@@ -5,31 +5,31 @@
 #include <string.h>
 #include <stdio.h>
 
-#define REV_OK		0	//½ÓÊÕÍê³É±êÖ¾
-#define REV_WAIT	1	//½ÓÊÕÎ´Íê³É±êÖ¾
+#define REV_OK		0	//æ¥æ”¶å®Œæˆæ ‡å¿—
+#define REV_WAIT	1	//æ¥æ”¶æœªå®Œæˆæ ‡å¿—
 
-#define ESP8266_WIFI_INFO		"AT+CWJAP=\"rcan\",\"96527866\"\r\n"
+#define ESP8266_WIFI_INFO		"AT+CWJAP=\"{è´¦å·}\",\"{å¯†ç }\"\r\n"		//WIFIè´¦å·ä¸å¯†ç 
 
-#define ESP8266_MQTTUS_INFO		"AT+MQTTUSERCFG=0,1,\"cabinet\",\"oay0gSchgn\",\"version=2018-10-31&res=products%2Foay0gSchgn%2Fdevices%2Fcabinet&et=1916285142&method=md5&sign=iE9rAZ8KU8zpHjSLQDvPUg%3D%3D\",0,0,\"\"\r\n"
+#define ESP8266_MQTTUS_INFO		"AT+MQTTUSERCFG=0,1,\"{**}\",\"{**}\",\"{**}\",0,0,\"\"\r\n"  //æ›¿æ¢è¿æ¥äº‘ç«¯é‰´æƒå­—ç¬¦ä¸²
 
-#define ESP8266_ONENET_INFO		"AT+MQTTCONN=0,\"mqtts.heclouds.com\",1883,1\r\n"  	//ĞÂ°æOneNETµØÖ·
+#define ESP8266_ONENET_INFO		"AT+MQTTCONN=0,\"mqtts.heclouds.com\",1883,1\r\n"  	//æ–°ç‰ˆOneNETåœ°å€
 
 unsigned char esp8266_buf[256];
 unsigned short esp8266_cnt = 0, esp8266_cntPre = 0;
 
-const char* pubtopic="$sys/oay0gSchgn/cabinet/thing/property/post";
-const char* pubtopic2="$sys/oay0gSchgn/cabinet/thing/property/set"; //¶©ÔÄ
+const char* pubtopic="$sys/{**}/{**}/{**}/{**}/post";
+const char* pubtopic2="$sys/{**}/{**}/{**}/{**}/set"; //è®¢é˜…
 
 //==========================================================
-//	º¯ÊıÃû³Æ£º	ESP8266_Clear
+//	å‡½æ•°åç§°ï¼š	ESP8266_Clear
 //
-//	º¯Êı¹¦ÄÜ£º	Çå¿Õ»º´æ
+//	å‡½æ•°åŠŸèƒ½ï¼š	æ¸…ç©ºç¼“å­˜
 //
-//	Èë¿Ú²ÎÊı£º	ÎŞ
+//	å…¥å£å‚æ•°ï¼š	æ— 
 //
-//	·µ»Ø²ÎÊı£º	ÎŞ
+//	è¿”å›å‚æ•°ï¼š	æ— 
 //
-//	ËµÃ÷£º		
+//	è¯´æ˜ï¼š		
 //==========================================================
 void ESP8266_Clear(void)
 {
@@ -40,46 +40,46 @@ void ESP8266_Clear(void)
 }
 
 //==========================================================
-//	º¯ÊıÃû³Æ£º	ESP8266_WaitRecive
+//	å‡½æ•°åç§°ï¼š	ESP8266_WaitRecive
 //
-//	º¯Êı¹¦ÄÜ£º	µÈ´ı½ÓÊÕÍê³É
+//	å‡½æ•°åŠŸèƒ½ï¼š	ç­‰å¾…æ¥æ”¶å®Œæˆ
 //
-//	Èë¿Ú²ÎÊı£º	ÎŞ
+//	å…¥å£å‚æ•°ï¼š	æ— 
 //
-//	·µ»Ø²ÎÊı£º	REV_OK-½ÓÊÕÍê³É		REV_WAIT-½ÓÊÕ³¬Ê±Î´Íê³É
+//	è¿”å›å‚æ•°ï¼š	REV_OK-æ¥æ”¶å®Œæˆ		REV_WAIT-æ¥æ”¶è¶…æ—¶æœªå®Œæˆ
 //
-//	ËµÃ÷£º		Ñ­»·µ÷ÓÃ¼ì²âÊÇ·ñ½ÓÊÕÍê³É
+//	è¯´æ˜ï¼š		å¾ªç¯è°ƒç”¨æ£€æµ‹æ˜¯å¦æ¥æ”¶å®Œæˆ
 //==========================================================
 _Bool ESP8266_WaitRecive(void)
 {
 
-	if(esp8266_cnt == 0) 							//Èç¹û½ÓÊÕ¼ÆÊıÎª0 ÔòËµÃ÷Ã»ÓĞ´¦ÓÚ½ÓÊÕÊı¾İÖĞ£¬ËùÒÔÖ±½ÓÌø³ö£¬½áÊøº¯Êı
+	if(esp8266_cnt == 0) 							//å¦‚æœæ¥æ”¶è®¡æ•°ä¸º0 åˆ™è¯´æ˜æ²¡æœ‰å¤„äºæ¥æ”¶æ•°æ®ä¸­ï¼Œæ‰€ä»¥ç›´æ¥è·³å‡ºï¼Œç»“æŸå‡½æ•°
 		return REV_WAIT;
 		
-	if(esp8266_cnt == esp8266_cntPre)				//Èç¹ûÉÏÒ»´ÎµÄÖµºÍÕâ´ÎÏàÍ¬£¬ÔòËµÃ÷½ÓÊÕÍê±Ï
+	if(esp8266_cnt == esp8266_cntPre)				//å¦‚æœä¸Šä¸€æ¬¡çš„å€¼å’Œè¿™æ¬¡ç›¸åŒï¼Œåˆ™è¯´æ˜æ¥æ”¶å®Œæ¯•
 	{
-		esp8266_cnt = 0;							//Çå0½ÓÊÕ¼ÆÊı
+		esp8266_cnt = 0;							//æ¸…0æ¥æ”¶è®¡æ•°
 			
-		return REV_OK;								//·µ»Ø½ÓÊÕÍê³É±êÖ¾
+		return REV_OK;								//è¿”å›æ¥æ”¶å®Œæˆæ ‡å¿—
 	}
 		
-	esp8266_cntPre = esp8266_cnt;					//ÖÃÎªÏàÍ¬
+	esp8266_cntPre = esp8266_cnt;					//ç½®ä¸ºç›¸åŒ
 	
-	return REV_WAIT;								//·µ»Ø½ÓÊÕÎ´Íê³É±êÖ¾
+	return REV_WAIT;								//è¿”å›æ¥æ”¶æœªå®Œæˆæ ‡å¿—
 
 }
 
 //==========================================================
-//	º¯ÊıÃû³Æ£º	ESP8266_SendCmd
+//	å‡½æ•°åç§°ï¼š	ESP8266_SendCmd
 //
-//	º¯Êı¹¦ÄÜ£º	·¢ËÍÃüÁî
+//	å‡½æ•°åŠŸèƒ½ï¼š	å‘é€å‘½ä»¤
 //
-//	Èë¿Ú²ÎÊı£º	cmd£ºÃüÁî
-//				res£ºĞèÒª¼ì²éµÄ·µ»ØÖ¸Áî
+//	å…¥å£å‚æ•°ï¼š	cmdï¼šå‘½ä»¤
+//				resï¼šéœ€è¦æ£€æŸ¥çš„è¿”å›æŒ‡ä»¤
 //
-//	·µ»Ø²ÎÊı£º	0-³É¹¦	1-Ê§°Ü
+//	è¿”å›å‚æ•°ï¼š	0-æˆåŠŸ	1-å¤±è´¥
 //
-//	ËµÃ÷£º		
+//	è¯´æ˜ï¼š		
 //==========================================================
 _Bool ESP8266_SendCmd(char *cmd, char *res)
 {
@@ -90,11 +90,11 @@ _Bool ESP8266_SendCmd(char *cmd, char *res)
 
 	while(timeOut--)
 	{
-		if(ESP8266_WaitRecive() == REV_OK)							//Èç¹ûÊÕµ½Êı¾İ
+		if(ESP8266_WaitRecive() == REV_OK)							//å¦‚æœæ”¶åˆ°æ•°æ®
 		{
-			if(strstr((const char *)esp8266_buf, res) != NULL)		//Èç¹û¼ìË÷µ½¹Ø¼ü´Ê
+			if(strstr((const char *)esp8266_buf, res) != NULL)		//å¦‚æœæ£€ç´¢åˆ°å…³é”®è¯
 			{
-				ESP8266_Clear();									//Çå¿Õ»º´æ
+				ESP8266_Clear();									//æ¸…ç©ºç¼“å­˜
 				
 				return 0;
 			}
@@ -107,188 +107,144 @@ _Bool ESP8266_SendCmd(char *cmd, char *res)
 
 }
 
-//==========================================================
-//	º¯ÊıÃû³Æ£º	ESP8266_SendData
-//
-//	º¯Êı¹¦ÄÜ£º	·¢ËÍÊı¾İ
-//
-//	Èë¿Ú²ÎÊı£º	temp£ºÎÂ¶ÈÖµ
-//				      humi£ºÊª¶ÈÖµ
-//				      adcx£º¹âÕÕ¶È//ºóÃæ×Ô¼º¼Ó
-//
-//	·µ»Ø²ÎÊı£º	ÎŞ
-//
-//	ËµÃ÷£º		
-//==========================================================
-// ·¢ËÍÊı¾İµ½OneNETÆ½Ì¨
 
-//==========================================================
-//	Êı¾İ£¨´®¿Úµ÷ÊÔÓÃ£©
-/*
-AT
-
-AT+CWMODE=1
-
-AT+CWJAP="CMCC-CC","67824366"
-
-AT+MQTTUSERCFG=0,1,"mqtt1","V0uTuio971","version=2018-10-31&res=products%2FV0uTuio971%2Fdevices%2Fmqtt1&et=2810295937&method=md5&sign=28AeB5C1zIV22nZ8HCeAUQ%3D%3D",0,0,""
-
-AT+MQTTCONN=0,"mqtts.heclouds.com",1883,1
-
-
-//ÎÂ¶ÈÊª¶È
-AT+MQTTPUB=0,"$sys/oay0gSchgn/cabinet/thing/property/post","{\"id\":\"123\"\,\"params\":{\"temp\":{\"value\":33.000000}\,\"humi\":{\"value\":33.000000}}}",0,0
-
-//ÅÅ·çÉÈ
-AT+MQTTPUB=0,"$sys/oay0gSchgn/cabinet/thing/property/post","{\"id\":\"123\"\,\"params\":{\"fan\":{\"value\":false}}}",0,0
-
-//Ò»ºÅ¹ñ
-AT+MQTTPUB=0,"$sys/oay0gSchgn/cabinet/thing/property/post","{\"id\":\"123\"\,\"params\":{\"one\":{\"value\":false}}}",0,0
-
-//¶şºÅ¹ñ
-AT+MQTTPUB=0,"$sys/oay0gSchgn/cabinet/thing/property/post","{\"id\":\"123\"\,\"params\":{\"two\":{\"value\":false}}}",0,0
-
-//ÈıºÅ¹ñ
-AT+MQTTPUB=0,"$sys/oay0gSchgn/cabinet/thing/property/post","{\"id\":\"123\"\,\"params\":{\"three\":{\"value\":false}}}",0,0
-
-*/
 
 //==========================================================
 void ESP8266_Send_DHT11_Data(double temp, double humi)
 {
-    char cmdBuf[512]; // Ê¹ÓÃ»º³åÇø
+    char cmdBuf[512]; // ä½¿ç”¨ç¼“å†²åŒº
 
-    // ¹¹Ôì MQTT ·¢ËÍÃüÁî
+    // æ„é€  MQTT å‘é€å‘½ä»¤
     sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"temp\\\":{\\\"value\\\":%lf}\\,\\\"humi\\\":{\\\"value\\\":%lf}}}\",0,0\r\n",
             pubtopic, temp, humi);
 
-    // ·¢ËÍÃüÁî²¢¼ì²é·µ»Ø "OK"
+    // å‘é€å‘½ä»¤å¹¶æ£€æŸ¥è¿”å› "OK"
     if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 }
 
 void ESP8266_Send_fan_Data(uint8_t fan)
 {
-	char cmdBuf[512]; // Ê¹ÓÃ»º³åÇø
+	char cmdBuf[512]; // ä½¿ç”¨ç¼“å†²åŒº
 
-    // ¹¹Ôì MQTT ·¢ËÍÃüÁî
+    // æ„é€  MQTT å‘é€å‘½ä»¤
     sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"fan\\\":{\\\"value\\\":%s}}}\",0,0\r\n",
             pubtopic, fan==1?"true ":"false");
 
-    // ·¢ËÍÃüÁî²¢¼ì²é·µ»Ø "OK"
+    // å‘é€å‘½ä»¤å¹¶æ£€æŸ¥è¿”å› "OK"
     if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 }
 
 void ESP8266_Send_fire_Data(uint8_t fire)
 {
-	char cmdBuf[512]; // Ê¹ÓÃ»º³åÇø
+	char cmdBuf[512]; // ä½¿ç”¨ç¼“å†²åŒº
 
-    // ¹¹Ôì MQTT ·¢ËÍÃüÁî
+    // æ„é€  MQTT å‘é€å‘½ä»¤
     sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"fire\\\":{\\\"value\\\":%s}}}\",0,0\r\n",
             pubtopic, fire==1?"true ":"false");
 
-    // ·¢ËÍÃüÁî²¢¼ì²é·µ»Ø "OK"
+    // å‘é€å‘½ä»¤å¹¶æ£€æŸ¥è¿”å› "OK"
     if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 }
 
 void ESP8266_Send_one_Data(uint8_t one)
 {
-	char cmdBuf[512]; // Ê¹ÓÃ»º³åÇø
+	char cmdBuf[512]; // ä½¿ç”¨ç¼“å†²åŒº
 
-    // ¹¹Ôì MQTT ·¢ËÍÃüÁî
+    // æ„é€  MQTT å‘é€å‘½ä»¤
     sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"one\\\":{\\\"value\\\":%s}}}\",0,0\r\n",
             pubtopic, one==1?"true ":"false");
 
-    // ·¢ËÍÃüÁî²¢¼ì²é·µ»Ø "OK"
+    // å‘é€å‘½ä»¤å¹¶æ£€æŸ¥è¿”å› "OK"
     if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 }
 
 void ESP8266_Send_two_Data(uint8_t two)
 {
-	char cmdBuf[512]; // Ê¹ÓÃ»º³åÇø
+	char cmdBuf[512]; // ä½¿ç”¨ç¼“å†²åŒº
 
-    // ¹¹Ôì MQTT ·¢ËÍÃüÁî
+    // æ„é€  MQTT å‘é€å‘½ä»¤
     sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"two\\\":{\\\"value\\\":%s}}}\",0,0\r\n",
             pubtopic, two==1?"true ":"false");
 
-    // ·¢ËÍÃüÁî²¢¼ì²é·µ»Ø "OK"
+    // å‘é€å‘½ä»¤å¹¶æ£€æŸ¥è¿”å› "OK"
     if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 }
 
 void ESP8266_Send_three_Data(uint8_t three)
 {
-	char cmdBuf[512]; // Ê¹ÓÃ»º³åÇø
+	char cmdBuf[512]; // ä½¿ç”¨ç¼“å†²åŒº
 
-    // ¹¹Ôì MQTT ·¢ËÍÃüÁî
+    // æ„é€  MQTT å‘é€å‘½ä»¤
     sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"three\\\":{\\\"value\\\":%s}}}\",0,0\r\n",
             pubtopic, three==1?"true ":"false");
 
-    // ·¢ËÍÃüÁî²¢¼ì²é·µ»Ø "OK"
+    // å‘é€å‘½ä»¤å¹¶æ£€æŸ¥è¿”å› "OK"
     if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 }
 
 void ESP8266_Send_all_Data(uint8_t all)
 {
-	char cmdBuf[512]; // Ê¹ÓÃ»º³åÇø
+	char cmdBuf[512]; // ä½¿ç”¨ç¼“å†²åŒº
 
-    // ¹¹Ôì MQTT ·¢ËÍÃüÁî
+    // æ„é€  MQTT å‘é€å‘½ä»¤
     sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"one\\\":{\\\"value\\\":%s}}}\",0,0\r\n",
             pubtopic, all==1?"true ":"false");
 		if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 	sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"two\\\":{\\\"value\\\":%s}}}\",0,0\r\n",
             pubtopic, all==1?"true ":"false");
 		if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 	sprintf(cmdBuf,
             "AT+MQTTPUB=0,\"%s\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"params\\\":{\\\"three\\\":{\\\"value\\\":%s}}}\",0,0\r\n",
             pubtopic, all==1?"true ":"false");
-    // ·¢ËÍÃüÁî²¢¼ì²é·µ»Ø "OK"
+    // å‘é€å‘½ä»¤å¹¶æ£€æŸ¥è¿”å› "OK"
     if (ESP8266_SendCmd(cmdBuf, "OK"))
     {
-        Delay_ms(20); // Ôö¼ÓÊÊµ±µÄÑÓÊ±
+        Delay_ms(20); // å¢åŠ é€‚å½“çš„å»¶æ—¶
     }
 }
 
 //==========================================================
-//	º¯ÊıÃû³Æ£º	ESP8266_Init
+//	å‡½æ•°åç§°ï¼š	ESP8266_Init
 //
-//	º¯Êı¹¦ÄÜ£º	³õÊ¼»¯ESP8266
+//	å‡½æ•°åŠŸèƒ½ï¼š	åˆå§‹åŒ–ESP8266
 //
-//	Èë¿Ú²ÎÊı£º	ÎŞ
+//	å…¥å£å‚æ•°ï¼š	æ— 
 //
-//	·µ»Ø²ÎÊı£º	ÎŞ
+//	è¿”å›å‚æ•°ï¼š	æ— 
 //
-//	ËµÃ÷£º		
+//	è¯´æ˜ï¼š		
 //==========================================================
 void ESP8266_Init(void)
 {
@@ -297,9 +253,9 @@ void ESP8266_Init(void)
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
-	//ESP8266¸´Î»Òı½Å
+	//ESP8266å¤ä½å¼•è„š
 	GPIO_Initure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Initure.GPIO_Pin = GPIO_Pin_11;					//GPIOA11-¸´Î»
+	GPIO_Initure.GPIO_Pin = GPIO_Pin_11;					//GPIOA11-å¤ä½
 	GPIO_Initure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_Initure);
 	
@@ -331,22 +287,22 @@ void ESP8266_Init(void)
 }
 
 //==========================================================
-//	º¯ÊıÃû³Æ£º	USART2_IRQHandler
+//	å‡½æ•°åç§°ï¼š	USART2_IRQHandler
 //
-//	º¯Êı¹¦ÄÜ£º	´®¿Ú3ÊÕ·¢ÖĞ¶Ï
+//	å‡½æ•°åŠŸèƒ½ï¼š	ä¸²å£3æ”¶å‘ä¸­æ–­
 //
-//	Èë¿Ú²ÎÊı£º	ÎŞ
+//	å…¥å£å‚æ•°ï¼š	æ— 
 //
-//	·µ»Ø²ÎÊı£º	ÎŞ
+//	è¿”å›å‚æ•°ï¼š	æ— 
 //
-//	ËµÃ÷£º		
+//	è¯´æ˜ï¼š		
 //==========================================================
 void USART2_IRQHandler(void)
 {
 
-	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) //½ÓÊÕÖĞ¶Ï
+	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET) //æ¥æ”¶ä¸­æ–­
 	{
-		if(esp8266_cnt >= sizeof(esp8266_buf))	esp8266_cnt = 0; //²é½ÓÊÕ»º³åÇøesp8266_bufÊÇ·ñÒÑÂú¡£Èç¹ûÒÑÂú£¬Ôò½«¼ÆÊıÆ÷esp8266_cntÖØÖÃÎª0£¬ÒÔ·ÀÖ¹»º³åÇøÒç³ö¡£
+		if(esp8266_cnt >= sizeof(esp8266_buf))	esp8266_cnt = 0; //æŸ¥æ¥æ”¶ç¼“å†²åŒºesp8266_bufæ˜¯å¦å·²æ»¡ã€‚å¦‚æœå·²æ»¡ï¼Œåˆ™å°†è®¡æ•°å™¨esp8266_cnté‡ç½®ä¸º0ï¼Œä»¥é˜²æ­¢ç¼“å†²åŒºæº¢å‡ºã€‚
 		esp8266_buf[esp8266_cnt++] = USART2->DR;
 		
 		USART_ClearFlag(USART2, USART_FLAG_RXNE);
@@ -355,16 +311,16 @@ void USART2_IRQHandler(void)
 }
 
 //==========================================================
-//	º¯ÊıÃû³Æ£º	ESP8266_GetIPD
+//	å‡½æ•°åç§°ï¼š	ESP8266_GetIPD
 //
-//	º¯Êı¹¦ÄÜ£º	»ñÈ¡Æ½Ì¨·µ»ØµÄÊı¾İ
+//	å‡½æ•°åŠŸèƒ½ï¼š	è·å–å¹³å°è¿”å›çš„æ•°æ®
 //
-//	Èë¿Ú²ÎÊı£º	µÈ´ıµÄÊ±¼ä(³ËÒÔ10ms)
+//	å…¥å£å‚æ•°ï¼š	ç­‰å¾…çš„æ—¶é—´(ä¹˜ä»¥10ms)
 //
-//	·µ»Ø²ÎÊı£º	Æ½Ì¨·µ»ØµÄÔ­Ê¼Êı¾İ
+//	è¿”å›å‚æ•°ï¼š	å¹³å°è¿”å›çš„åŸå§‹æ•°æ®
 //
-//	ËµÃ÷£º		²»Í¬ÍøÂçÉè±¸·µ»ØµÄ¸ñÊ½²»Í¬£¬ĞèÒªÈ¥µ÷ÊÔ
-//				ÈçESP8266µÄ·µ»Ø¸ñÊ½Îª	"+MQTTSUBRECV,x:yyy"	x´ú±íÊı¾İ³¤¶È£¬yyyÊÇÊı¾İÄÚÈİ
+//	è¯´æ˜ï¼š		ä¸åŒç½‘ç»œè®¾å¤‡è¿”å›çš„æ ¼å¼ä¸åŒï¼Œéœ€è¦å»è°ƒè¯•
+//				å¦‚ESP8266çš„è¿”å›æ ¼å¼ä¸º	"+MQTTSUBRECV,x:yyy"	xä»£è¡¨æ•°æ®é•¿åº¦ï¼Œyyyæ˜¯æ•°æ®å†…å®¹
 //==========================================================
 const char *ESP8266_GetIPD(unsigned short timeOut)
 {
@@ -372,47 +328,47 @@ const char *ESP8266_GetIPD(unsigned short timeOut)
 
     do
     {
-        if(ESP8266_WaitRecive() == REV_OK) // Èç¹û½ÓÊÕÍê³É
+        if(ESP8266_WaitRecive() == REV_OK) // å¦‚æœæ¥æ”¶å®Œæˆ
         {
-            ptrIPD = strstr((char *)esp8266_buf, "+MQTTSUBRECV"); // ËÑË÷¡°+MQTTSUBRECV¡±Í·
-            if(ptrIPD != NULL) // Èç¹ûÕÒµ½ÁË
+            ptrIPD = strstr((char *)esp8266_buf, "+MQTTSUBRECV"); // æœç´¢â€œ+MQTTSUBRECVâ€å¤´
+            if(ptrIPD != NULL) // å¦‚æœæ‰¾åˆ°äº†
             {
-                ptrIPD = strchr(ptrIPD, ':'); // ÕÒµ½µÚÒ»¸ö':'£¬ÕâÊÇÊı¾İ¿ªÊ¼µÄ±êÖ¾
+                ptrIPD = strchr(ptrIPD, ':'); // æ‰¾åˆ°ç¬¬ä¸€ä¸ª':'ï¼Œè¿™æ˜¯æ•°æ®å¼€å§‹çš„æ ‡å¿—
                 if(ptrIPD != NULL)
                 {
-                    ptrIPD++; // Ìø¹ı':'
-                    // ÔÙ´Î²éÕÒÏÂÒ»¸ö':'£¬ÒÔÌø¹ıÏûÏ¢ID
+                    ptrIPD++; // è·³è¿‡':'
+                    // å†æ¬¡æŸ¥æ‰¾ä¸‹ä¸€ä¸ª':'ï¼Œä»¥è·³è¿‡æ¶ˆæ¯ID
                     ptrIPD = strchr(ptrIPD, ':');
                     if(ptrIPD != NULL)
                     {
-                        ptrIPD++; // Ìø¹ıµÚ¶ş¸ö':'
-                        return (const char *)(ptrIPD); // ·µ»ØÖ¸ÏòÊµ¼ÊÊı¾İµÄÖ¸Õë
+                        ptrIPD++; // è·³è¿‡ç¬¬äºŒä¸ª':'
+                        return (const char *)(ptrIPD); // è¿”å›æŒ‡å‘å®é™…æ•°æ®çš„æŒ‡é’ˆ
                     }
                     else
                     {
-                        return NULL; // Èç¹ûÃ»ÓĞÕÒµ½µÚ¶ş¸ö':'£¬·µ»ØNULL
+                        return NULL; // å¦‚æœæ²¡æœ‰æ‰¾åˆ°ç¬¬äºŒä¸ª':'ï¼Œè¿”å›NULL
                     }
                 }
                 else
                 {
-                    return NULL; // Èç¹ûÃ»ÓĞÕÒµ½µÚÒ»¸ö':'£¬·µ»ØNULL
+                    return NULL; // å¦‚æœæ²¡æœ‰æ‰¾åˆ°ç¬¬ä¸€ä¸ª':'ï¼Œè¿”å›NULL
                 }
             }
         }
 
-        Delay_ms(50); // ÑÓÊ±µÈ´ı
+        Delay_ms(50); // å»¶æ—¶ç­‰å¾…
     } while(timeOut--);
 
-    return NULL; // ³¬Ê±»¹Î´ÕÒµ½£¬·µ»Ø¿ÕÖ¸Õë
+    return NULL; // è¶…æ—¶è¿˜æœªæ‰¾åˆ°ï¼Œè¿”å›ç©ºæŒ‡é’ˆ
 }
 
 /**
- * @brief  ´ÓJSON×Ö·û´®ÖĞÌáÈ¡³öÖ¸¶¨¼üµÄÖµ
- * @param  *buffer °üº¬JSONµÄ×Ö·û´®
- * @param  *key Ö¸¶¨²éÕÒµÄ¼üÖµ
- * @param  *value ´¢´æ²éÕÒµÄ¼üÖµ
- * @param  valueMaxLen ±äÁ¿»º³åÇøµÄ×î´ó³¤¶È
- * @retval ÎŞ
+ * @brief  ä»JSONå­—ç¬¦ä¸²ä¸­æå–å‡ºæŒ‡å®šé”®çš„å€¼
+ * @param  *buffer åŒ…å«JSONçš„å­—ç¬¦ä¸²
+ * @param  *key æŒ‡å®šæŸ¥æ‰¾çš„é”®å€¼
+ * @param  *value å‚¨å­˜æŸ¥æ‰¾çš„é”®å€¼
+ * @param  valueMaxLen å˜é‡ç¼“å†²åŒºçš„æœ€å¤§é•¿åº¦
+ * @retval æ— 
  */
 void extractJsonValue(const char *buffer, const char *key, char *value, size_t valueMaxLen)
 {
@@ -420,43 +376,43 @@ void extractJsonValue(const char *buffer, const char *key, char *value, size_t v
     size_t keyValueLength;
     size_t keyLength = strlen(key);
 
-    char keyPattern[40];                   /* Ô¤Áô×ã¹»µÄ¿Õ¼ä´æ´¢ key ºÍ²éÕÒ¸ñÊ½´® */
-    sprintf(keyPattern, "\"%s\"", key);   /* ¹¹½¨²éÕÒÄ£Ê½´®£¬¼´ "key": */
+    char keyPattern[40];                   /* é¢„ç•™è¶³å¤Ÿçš„ç©ºé—´å­˜å‚¨ key å’ŒæŸ¥æ‰¾æ ¼å¼ä¸² */
+    sprintf(keyPattern, "\"%s\"", key);   /* æ„å»ºæŸ¥æ‰¾æ¨¡å¼ä¸²ï¼Œå³ "key": */
     
-    /* ²éÕÒJSON×Ö·û´®µÄ¿ªÍ· */
+    /* æŸ¥æ‰¾JSONå­—ç¬¦ä¸²çš„å¼€å¤´ */
     jsonStart = strchr(buffer, '{');
     if (jsonStart == NULL)
         return;
 
-    /* ²éÕÒJSON×Ö·û´®µÄ½áÎ² */
+    /* æŸ¥æ‰¾JSONå­—ç¬¦ä¸²çš„ç»“å°¾ */
     jsonEnd = strrchr(jsonStart, '}');
     if (jsonEnd == NULL)
         return;
 
-    /* ²éÕÒ¼ü */
+    /* æŸ¥æ‰¾é”® */
     keyStart = strstr(jsonStart, keyPattern);
     if (keyStart == NULL)
         return;
 
-    /* ²éÕÒ¼üÖµµÄ½áÊø À¨ºÅ £¬È·¶¨¼üÖµµÄ½áÊøÎ»ÖÃ */
+    /* æŸ¥æ‰¾é”®å€¼çš„ç»“æŸ æ‹¬å· ï¼Œç¡®å®šé”®å€¼çš„ç»“æŸä½ç½® */
     keyValueEnd = strchr(keyStart, '}');
     if (keyValueEnd == NULL || keyValueEnd > jsonEnd)
         return;
 
-    /* ¸ù¾İ¼üÖµµÄÆğÊ¼ºÍ½áÊøÎ»ÖÃ£¬¼ÆËã¼üÖµµÄ³¤¶È */
+    /* æ ¹æ®é”®å€¼çš„èµ·å§‹å’Œç»“æŸä½ç½®ï¼Œè®¡ç®—é”®å€¼çš„é•¿åº¦ */
     keyValueLength = keyValueEnd - keyStart;
 
-    /* ¿½±´¼üÖµµ½value»º³åÇøÖĞ */
+    /* æ‹·è´é”®å€¼åˆ°valueç¼“å†²åŒºä¸­ */
     if (keyValueLength < valueMaxLen)
     {
         strncpy(value, keyStart, keyValueLength);
-        value[keyValueLength] = '\0';   /* Ìí¼Ó×Ö·û´®ÖÕÖ¹×Ö·û\0 */
+        value[keyValueLength] = '\0';   /* æ·»åŠ å­—ç¬¦ä¸²ç»ˆæ­¢å­—ç¬¦\0 */
     }
     else
     {
-        /* Èç¹ûÌá¹©µÄ»º³åÇø²»¹»´ó£¬ÄÇÃ´¿ÉÒÔ¸ù¾İÊµ¼ÊÇé¿ö´¦Àí£¬ÕâÀï¼òµ¥µØ½Ø¶Ï×Ö·û´® */
+        /* å¦‚æœæä¾›çš„ç¼“å†²åŒºä¸å¤Ÿå¤§ï¼Œé‚£ä¹ˆå¯ä»¥æ ¹æ®å®é™…æƒ…å†µå¤„ç†ï¼Œè¿™é‡Œç®€å•åœ°æˆªæ–­å­—ç¬¦ä¸² */
         strncpy(value, keyStart, valueMaxLen - 1);
-        value[valueMaxLen - 1] = '\0';   /* Ìí¼Ó×Ö·û´®ÖÕÖ¹×Ö·û\0 */
+        value[valueMaxLen - 1] = '\0';   /* æ·»åŠ å­—ç¬¦ä¸²ç»ˆæ­¢å­—ç¬¦\0 */
     }
 }
 
